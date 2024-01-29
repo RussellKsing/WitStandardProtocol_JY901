@@ -24,7 +24,7 @@ class SerialConfig:
 
 class DeviceModel:
     # 设备名称
-    deviceName = "我的设备"
+    deviceName = "my device"
 
     #设备ID
     ADDR = 0x50
@@ -51,7 +51,7 @@ class DeviceModel:
     protocolResolver = None
 
     def __init__(self, deviceName, protocolResolver, dataProcessor, dataUpdateListener):
-        print("初始化设备模型")
+        print("initialize")
         self.deviceName = deviceName
         self.protocolResolver = protocolResolver
         self.dataProcessor = dataProcessor
@@ -91,7 +91,7 @@ class DeviceModel:
         读取数据线程
         :return:
         """
-        print("启动" + threadName)
+        print("start" + threadName)
         while True:
             # 如果串口打开了
             if self.isOpen:
@@ -104,7 +104,7 @@ class DeviceModel:
                     print(ex)
             else:
                 time.sleep(0.1)
-                print("暂停")
+                print("pause")
                 break
 
     def openDevice(self):
@@ -121,7 +121,7 @@ class DeviceModel:
             t = threading.Thread(target=self.readDataTh, args=("Data-Received-Thread",10,))          # 开启一个线程接收数据
             t.start()
         except SerialException:
-            print("打开" + self.serialConfig.portName + self.serialConfig.baud + "失败")
+            print("open" + self.serialConfig.portName + self.serialConfig.baud + "fail")
 
     def closeDevice(self):
         """
@@ -130,9 +130,9 @@ class DeviceModel:
         """
         if self.serialPort is not None:
             self.serialPort.close()
-            print("端口关闭了")
+            print("port closed")
         self.isOpen = False
-        print("设备关闭了")
+        print("device closed")
 
     def onDataReceived(self, data):
         """
