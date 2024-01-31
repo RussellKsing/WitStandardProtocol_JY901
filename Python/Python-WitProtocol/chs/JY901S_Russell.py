@@ -16,6 +16,7 @@ welcome = """
 """
 _writeF = None                    #写文件  Write file
 _IsWriteF = False                 #写文件标识    Write file identification
+_data = None
 
 def readConfig(device):
     """
@@ -100,6 +101,11 @@ def onUpdate(deviceModel):
         Tempstr += "\t" + str(deviceModel.getDeviceData("q3")) + "\t" + str(deviceModel.getDeviceData("q4"))
         Tempstr += "\r\n"
         _writeF.write(Tempstr)
+        _data.append([deviceModel.getDeviceData("accX"), deviceModel.getDeviceData("accY"), deviceModel.getDeviceData("accZ"), 
+                deviceModel.getDeviceData("gyroX"), deviceModel.getDeviceData("gyroY"), deviceModel.getDeviceData("gyroZ"),
+                deviceModel.getDeviceData("magX"), deviceModel.getDeviceData("magY"), deviceModel.getDeviceData("magZ")])
+        # _data.pop(0)
+        print(_data)
 
 def startRecord():
     """
@@ -108,8 +114,10 @@ def startRecord():
     """
     global _writeF
     global _IsWriteF
+    global _data
     _writeF = open(str(datetime.datetime.now().strftime('%Y%m%d%H%M%S')) + ".txt", "w")    #新建一个文件
     _IsWriteF = True                                                                        #标记写入标识
+    _data = []
     Tempstr = "Chiptime"
     Tempstr +=  "\tax(g)\tay(g)\taz(g)"
     Tempstr += "\twx(deg/s)\twy(deg/s)\twz(deg/s)"
@@ -130,8 +138,10 @@ def endRecord():
     """
     global _writeF
     global _IsWriteF
+    global _data
     _IsWriteF = False             # 标记不可写入标识    Tag cannot write the identity
     _writeF.close()               #关闭文件 Close file
+    _data = []
     print("结束记录数据")
 
 if __name__ == '__main__':

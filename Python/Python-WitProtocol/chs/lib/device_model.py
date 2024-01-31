@@ -120,8 +120,9 @@ class DeviceModel:
             self.isOpen = True
             t = threading.Thread(target=self.readDataTh, args=("Data-Received-Thread",10,))          # 开启一个线程接收数据
             t.start()
-        except SerialException:
-            print("open" + self.serialConfig.portName + self.serialConfig.baud + "fail")
+        except SerialException as e:
+            print(e)
+            print("open" + self.serialConfig.portName + str(self.serialConfig.baud) + "fail")
 
     def closeDevice(self):
         """
